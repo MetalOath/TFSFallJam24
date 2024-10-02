@@ -1043,6 +1043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _priority: 0
   _center: {x: 7.634195, y: -32.06351, z: 3.118835}
+  overrideCenter: 0
 --- !u!135 &1012177633
 SphereCollider:
   m_ObjectHideFlags: 0
