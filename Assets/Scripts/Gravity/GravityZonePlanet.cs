@@ -4,10 +4,13 @@ using UnityEngine;
 public class GravityZonePlanet : GravityZone
 {
     [SerializeField] private Vector3 _center;
+    [SerializeField] private bool overrideCenter;
 
     private void Awake()
     {
-        _center = transform.parent.position;
+        if (!overrideCenter) { }
+        else
+            _center = transform.parent.position;
     }
 
     public override Vector3 GetGravityDirection(ObjectGravity _gravityBody)

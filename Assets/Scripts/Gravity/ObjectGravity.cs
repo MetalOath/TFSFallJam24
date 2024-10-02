@@ -15,7 +15,7 @@ public class ObjectGravity : MonoBehaviour
         get
         {
             // If no gravity areas are affecting the object, return zero (no gravity)
-            if (_gravityAreas.Count == 0) return Vector3.zero;
+            if (_gravityAreas == null || _gravityAreas.Count == 0) return Vector3.zero;
 
             // Sort the gravity areas based on their priority, lowest to highest
             _gravityAreas.Sort((area1, area2) => area1.Priority.CompareTo(area2.Priority));
@@ -29,7 +29,7 @@ public class ObjectGravity : MonoBehaviour
     private List<GravityZone> _gravityAreas; // List of GravityArea objects affecting this body
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         // Get the Rigidbody component attached to this GameObject
         _rigidbody = transform.GetComponent<Rigidbody>();
