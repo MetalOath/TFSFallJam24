@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 3680095079764934949}
   - component: {fileID: 3596814450068895506}
   - component: {fileID: 2521206558985181458}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,3 +159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd3cf7751e56b043a13086e57c6d81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 3
+  nullPickupPrefab: {fileID: 6534871487296905037, guid: 4d8f4a99651f3884cb86263e770d999c,
+    type: 3}
+  earthPickupPrefab: {fileID: 6534871487296905037, guid: 26523261c3d60814ca8f9581986bedc7,
+    type: 3}
+  waterPickupPrefab: {fileID: 6534871487296905037, guid: 75cf6a2e99088b44aa580ad234254d51,
+    type: 3}
+  firePickupPrefab: {fileID: 6534871487296905037, guid: 3d128aca62f05934794015d0dd4b705e,
+    type: 3}

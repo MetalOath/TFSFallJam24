@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour
 
     private ObjectGravity _gravityBody;
 
+    public float Speed
+    {
+        get { return _speed; }
+        set { _speed = value; }
+    }
+
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -36,6 +42,19 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             _rigidbody.AddForce(-_gravityBody.GravityDirection * _jumpForce, ForceMode.Impulse);
+        }
+
+        // Left-click to activate ability
+        if (Input.GetMouseButtonDown(0))
+        {
+            // The actual ability activation is handled in PlayerAbilities
+        }
+
+        // Switch elemental affinity with right mouse click
+        if (Input.GetMouseButtonDown(1))
+        {
+            PlayerEnergyManager energyManager = GetComponent<PlayerEnergyManager>();
+            energyManager.CycleElementalAffinity();
         }
     }
 

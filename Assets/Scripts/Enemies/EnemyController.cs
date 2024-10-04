@@ -10,6 +10,16 @@ public class EnemyController : MonoBehaviour
     private Rigidbody _rigidbody;        // Rigidbody component for physics
     private ObjectGravity _gravityBody;  // Reference to ObjectGravity component
     private float _speed = 5f;           // Movement speed towards the player
+    public int maxHealth = 3;
+    private int currentHealth;
+
+    private bool isStunned = false;
+
+    // Prefabs for energy pickups
+    public GameObject nullPickupPrefab;
+    public GameObject earthPickupPrefab;
+    public GameObject waterPickupPrefab;
+    public GameObject firePickupPrefab;
 
     void Start()
     {
@@ -27,11 +37,59 @@ public class EnemyController : MonoBehaviour
         // Get components
         _rigidbody = GetComponent<Rigidbody>();
         _gravityBody = GetComponent<ObjectGravity>();
+
+        currentHealth = maxHealth;
+    }
+
+    // Method to handle taking damage
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        // Randomly select an elemental type to drop
+        ElementType elementType = (ElementType)Random.Range(0, System.Enum.GetValues(typeof(ElementType)).Length);
+        // Instantiate the corresponding pickup prefab
+        GameObject pickupPrefab = GetPickupPrefabForElement(elementType);
+        Instantiate(pickupPrefab, transform.position, Quaternion.identity);
+        // Destroy the enemy
+        Destroy(gameObject);
+    }
+
+    GameObject GetPickupPrefabForElement(ElementType elementType)
+    {
+        switch (elementType)
+        {
+            case ElementType.Null:
+                return nullPickupPrefab;
+            case ElementType.Earth:
+                return earthPickupPrefab;
+            case ElementType.Water:
+                return waterPickupPrefab;
+            case ElementType.Fire:
+                return firePickupPrefab;
+            default:
+                return null;
+        }
+    }
+
+    public IEnumerator Stun(float duration)
+    {
+        isStunned = true;
+        // Implement visual effect for stun if desired
+        yield return new WaitForSeconds(duration);
+        isStunned = false;
     }
 
     void FixedUpdate()
     {
-        if (_player == null) return;
+        if (isStunned || _player == null) return;
 
         // Calculate direction to the player
         Vector3 directionToPlayer = (_player.position - transform.position).normalized;
