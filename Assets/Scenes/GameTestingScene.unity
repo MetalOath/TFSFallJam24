@@ -1719,6 +1719,11 @@ PrefabInstance:
       propertyPath: VerticalArmLength
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 6726831422502448787, guid: 62a7c393cb765a042b7db763a84ef828,
+        type: 3}
+      propertyPath: Lookahead.Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
