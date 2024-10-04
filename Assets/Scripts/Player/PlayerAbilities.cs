@@ -132,14 +132,14 @@ public class PlayerAbilities : MonoBehaviour
             energyManager.elementalEnergies[ElementType.Earth] -= earthEnergyCost;
             energyManager.UpdateEnergyUI();
 
-            // Instantiate and throw the rock
-            GameObject rock = Instantiate(rockPrefab, transform.position + transform.forward, transform.rotation);
-            Rigidbody rb = rock.GetComponent<Rigidbody>();
-            rb.velocity = transform.forward * 20f; // Adjust speed as needed
+            // Instantiate the rock projectile
+            Vector3 spawnPosition = transform.position + transform.forward;
+            GameObject rock = Instantiate(rockPrefab, spawnPosition, transform.rotation);
 
             rockThrowTimer = rockThrowCooldown;
         }
     }
+
 
     void ExecuteSwiftDash()
     {
@@ -158,13 +158,26 @@ public class PlayerAbilities : MonoBehaviour
 
     IEnumerator SwiftDashCoroutine()
     {
-        float originalSpeed = playerController.Speed;
-        playerController.Speed *= 4f; // 4x speed boost
+        float dashDuration = 0.2f; // Duration of the dash
+        float dashSpeedMultiplier = 4f; // Speed multiplier during dash
 
-        float dashTime = 0.2f; // Duration of the dash
-        while (dashTime > 0)
+        Rigidbody playerRb = playerController.GetComponent<Rigidbody>();
+        Vector3 dashDirection = playerController.GetMovementDirection().normalized;
+
+        // Store original drag to reset later
+        float originalDrag = playerRb.drag;
+
+        // Remove drag to allow smooth movement
+        playerRb.drag = 0f;
+
+        // Apply dash force
+        playerRb.velocity = dashDirection * playerController.Speed * dashSpeedMultiplier;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < dashDuration)
         {
-            dashTime -= Time.deltaTime;
+            elapsedTime += Time.deltaTime;
+
             // Handle collision with enemies
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0.5f);
             foreach (Collider hitCollider in hitColliders)
@@ -182,10 +195,13 @@ public class PlayerAbilities : MonoBehaviour
                     }
                 }
             }
+
             yield return null;
         }
 
-        playerController.Speed = originalSpeed;
+        // Reset player velocity and drag
+        playerRb.velocity = Vector3.zero;
+        playerRb.drag = originalDrag;
     }
 
     void FireFlameBlast()
@@ -208,8 +224,6 @@ public class PlayerAbilities : MonoBehaviour
     void PerformBasicAttack()
     {
         if (basicAttackTimer > 0) return;  // Check if attack is on cooldown
-
-        Debug.Log("Shoot");
 
         // Instantiate the projectile slightly in front of the player to avoid collision with self
         Vector3 spawnPosition = transform.position + transform.forward * 1.5f;

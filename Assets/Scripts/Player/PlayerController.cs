@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Existing serialized fields and references
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _cam;
     [SerializeField] private Animator _animator;
 
     private float _groundCheckRadius = 0.3f;
-    private float _speed = 8f;
     private float _jumpForce = 500f;
 
     private Rigidbody _rigidbody;
     private Vector3 _direction;
 
     private ObjectGravity _gravityBody;
+
+    private float _speed = 8f; // Original speed value
 
     public float Speed
     {
@@ -44,18 +46,7 @@ public class PlayerController : MonoBehaviour
             _rigidbody.AddForce(-_gravityBody.GravityDirection * _jumpForce, ForceMode.Impulse);
         }
 
-        // Left-click to activate ability
-        if (Input.GetMouseButtonDown(0))
-        {
-            // The actual ability activation is handled in PlayerAbilities
-        }
-
-        // Switch elemental affinity with right mouse click
-        if (Input.GetMouseButtonDown(1))
-        {
-            PlayerEnergyManager energyManager = GetComponent<PlayerEnergyManager>();
-            energyManager.CycleElementalAffinity();
-        }
+        // Elemental affinity switching handled elsewhere
     }
 
     void FixedUpdate()
@@ -68,11 +59,11 @@ public class PlayerController : MonoBehaviour
             Vector3 gravityUp = -_gravityBody.GravityDirection.normalized;
 
             // Project camera directions onto the plane perpendicular to gravity
-            Vector3 camUp = Vector3.ProjectOnPlane(_cam.up, gravityUp).normalized;
+            Vector3 camForward = Vector3.ProjectOnPlane(_cam.forward, gravityUp).normalized;
             Vector3 camRight = Vector3.ProjectOnPlane(_cam.right, gravityUp).normalized;
 
             // Calculate the desired move direction
-            Vector3 desiredMoveDirection = (camUp * _direction.z + camRight * _direction.x).normalized;
+            Vector3 desiredMoveDirection = (camForward * _direction.z + camRight * _direction.x).normalized;
 
             // Move the character
             _rigidbody.MovePosition(_rigidbody.position + desiredMoveDirection * _speed * Time.fixedDeltaTime);
@@ -87,5 +78,21 @@ public class PlayerController : MonoBehaviour
 
         // Update animator
         // _animator.SetBool("isRunning", isRunning);
+    }
+
+    // **Add this method to get the current movement direction**
+    public Vector3 GetMovementDirection()
+    {
+        // Return the current movement direction based on input and camera orientation
+        Vector3 gravityUp = -_gravityBody.GravityDirection.normalized;
+
+        // Project camera directions onto the plane perpendicular to gravity
+        Vector3 camForward = Vector3.ProjectOnPlane(_cam.forward, gravityUp).normalized;
+        Vector3 camRight = Vector3.ProjectOnPlane(_cam.right, gravityUp).normalized;
+
+        // Calculate the desired move direction
+        Vector3 desiredMoveDirection = (camForward * _direction.z + camRight * _direction.x).normalized;
+
+        return desiredMoveDirection;
     }
 }

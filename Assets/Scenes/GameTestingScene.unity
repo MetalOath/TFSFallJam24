@@ -2002,7 +2002,7 @@ MonoBehaviour:
   ShowDebugText: 0
   ShowCameraFrustum: 1
   IgnoreTimeScale: 0
-  WorldUpOverride: {fileID: 0}
+  WorldUpOverride: {fileID: 279139657}
   ChannelMask: -1
   UpdateMethod: 2
   BlendUpdateMethod: 1
@@ -2304,6 +2304,11 @@ PrefabInstance:
       propertyPath: energyUIText
       value: 
       objectReference: {fileID: 304333493}
+    - target: {fileID: 5432115561324987342, guid: 9e3241faf3d8d014fa0bda003d363813,
+        type: 3}
+      propertyPath: basicAttackCooldown
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7591213500978401392, guid: 9e3241faf3d8d014fa0bda003d363813,
         type: 3}
       propertyPath: m_LocalPosition.x
